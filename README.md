@@ -5,6 +5,7 @@ For kernel 5.10 use mppvideodec
 for kernel 6.6 use v4l2slh264dec
 
 Example pipeline to send frames to HDMI output: 
+
 gst-launch-1.0 libuvch264src index=0 ! video/x-h264,width=1920,height=1080,framerate=30/1 ! queue ! h264parse ! queue ! v4l2slh264dec ! queue ! videoconvert ! kmssink
 
 
