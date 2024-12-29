@@ -1,4 +1,4 @@
-Developed by UnlimitedIRL to support H264 decode of DJI Action cameras. Tested on 3566, should work on 3588. 
+This is a gstreamer plugin developed by UnlimitedIRL to support pulling H264 frames from DJI action cameras. Tested on 3566, should work on 3588.
 
 For kernel 5.10 use mppvideodec
 for kernel 6.6 use v4l2slh264dec
