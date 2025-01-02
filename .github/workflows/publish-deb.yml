@@ -46,7 +46,7 @@ jobs:
         cp /usr/local/lib/libuvc.* ${{ github.workspace }}/pkg/usr/lib/aarch64-linux-gnu/
 
     - name: Build Debian Package
-      uses: jiro4989/build-deb-action@v1
+      uses: jiro4989/build-deb-action@v3
       with:
         package: ${{ env.DEB_PACKAGE_NAME }}
         version: ${{ env.PACKAGE_VERSION }}
