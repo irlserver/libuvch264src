@@ -24,6 +24,12 @@ jobs:
         sudo dpkg --add-architecture arm64
         echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports noble main restricted universe multiverse" | sudo tee /etc/apt/sources.list.d/arm64.list
         echo "deb-src [arch=arm64] http://ports.ubuntu.com/ubuntu-ports noble main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/arm64.list
+        echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports noble-updates main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/arm64.list
+        echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports noble-backports main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/arm64.list
+        echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports noble-security main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/arm64.list
+        
+        sudo sed -i '/deb http:\/\/.*ubuntu\.com.*arm64/d' /etc/apt/sources.list
+        sudo sed -i '/deb-src http:\/\/.*ubuntu\.com.*arm64/d' /etc/apt/sources.list
         sudo apt-get update
     - name: Install Dependencies
       run: |
