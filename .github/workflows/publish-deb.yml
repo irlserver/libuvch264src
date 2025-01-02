@@ -27,7 +27,9 @@ jobs:
         echo "cpp = '/usr/bin/aarch64-linux-gnu-g++'" >> arm64.txt
         echo "ar = '/usr/bin/aarch64-linux-gnu-ar'" >> arm64.txt
         echo "strip = '/usr/bin/aarch64-linux-gnu-strip'" >> arm64.txt
-        echo "pkgconfig = '/usr/bin/aarch64-linux-gnu-pkg-config'" >> arm64.txt
+        echo "pkgconfig = 'pkg-config'" >> arm64.txt
+        echo "[properties]" >> arm64.txt
+        echo "pkg_config_libdir = '/usr/lib/aarch64-linux-gnu/pkgconfig:/usr/share/pkgconfig'" >> arm64.txt
         echo "[host_machine]" >> arm64.txt
         echo "system = 'linux'" >> arm64.txt
         echo "cpu_family = 'arm64'" >> arm64.txt
@@ -45,7 +47,7 @@ jobs:
     - name: Build Project (ARM64)
       run: |
         mkdir build
-        meson setup build libuvch264src/ --cross-file arm64.txt
+        PKG_CONFIG_PATH=/usr/lib/aarch64-linux-gnu/pkgconfig:/usr/share/pkgconfig meson setup build libuvch264src/ --cross-file arm64.txt
         cd build
         meson compile
         meson install
