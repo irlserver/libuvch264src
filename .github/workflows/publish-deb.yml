@@ -20,18 +20,32 @@ jobs:
         sudo apt-get update
         sudo apt-get install -y build-essential cmake git meson pkg-config libgstreamer1.0-dev libgstreamer-plugins-base1.0-dev libusb-1.0-0 libusb-1.0-0-dev
 
-    - name: Build libuvc
+    - name: Create a arm64 cross-compilation definition file
+      run: |
+        echo "[binaries]" > arm64.txt
+        echo "c = '/usr/bin/aarch64-linux-gnu-gcc'" >> arm64.txt
+        echo "cpp = '/usr/bin/aarch64-linux-gnu-g++'" >> arm64.txt
+        echo "ar = '/usr/bin/aarch64-linux-gnu-ar'" >> arm64.txt
+        echo "strip = '/usr/bin/aarch64-linux-gnu-strip'" >> arm64.txt
+        echo "pkgconfig = '/usr/bin/aarch64-linux-gnu-pkg-config'" >> arm64.txt
+        echo "[host_machine]" >> arm64.txt
+        echo "system = 'linux'" >> arm64.txt
+        echo "cpu_family = 'arm64'" >> arm64.txt
+        echo "cpu = 'cortex-a53'" >> arm64.txt # Adjust if needed
+        echo "endian = 'little'" >> arm64.txt
+
+    - name: Build libuvc (ARM64)
       run: |
         cd libuvc
-        cmake .
+        cmake -DCMAKE_SYSTEM_PROCESSOR=aarch64 .
         make
         sudo make install
         cd ..
 
-    - name: Build Project
+    - name: Build Project (ARM64)
       run: |
         mkdir build
-        meson setup build libuvch264src/
+        meson setup build libuvch264src/ --cross-file arm64.txt
         cd build
         meson compile
         meson install
