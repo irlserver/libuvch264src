@@ -21,17 +21,23 @@ jobs:
         sudo apt-get install -y g++-aarch64-linux-gnu
     - name: Add arm64 architecture and Update Sources
       run: |
-        sudo rm /etc/apt/sources.list.d/ubuntu.sources
+        sudo rm -f /etc/apt/sources.list.d/ubuntu.sources
         export CODENAME="$( lsb_release -c -s )"
         echo "deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ ${CODENAME} main restricted universe multiverse" | sudo tee /etc/apt/sources.list.d/amd64.list 
-        echo "deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ ${CODENAME}-updates main restricted universe multiverse" | sudo tee /etc/apt/sources.list.d/amd64.list 
-        echo "deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ ${CODENAME}-backports main restricted universe multiverse" | sudo tee /etc/apt/sources.list.d/amd64.list
-        echo "deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ ${CODENAME}-security main restricted universe multiverse" | sudo tee /etc/apt/sources.list.d/amd64.list
-        echo "deb [arch=arm64] http://ports.ubuntu.com/ ${CODENAME} main restricted universe multiverse" | sudo tee /etc/apt/sources.list.d/arm64.list 
-        echo "deb [arch=arm64] http://ports.ubuntu.com/ ${CODENAME}-updates main restricted universe multiverse" | sudo tee /etc/apt/sources.list.d/arm64.list 
-        echo "deb [arch=arm64] http://ports.ubuntu.com/ ${CODENAME}-backports main restricted universe multiverse" | sudo tee /etc/apt/sources.list.d/arm64.list 
-        echo "deb [arch=arm64] http://ports.ubuntu.com/ ${CODENAME}-security main restricted universe multiverse" | sudo tee /etc/apt/sources.list.d/arm64.list 
-        sudo dpkg --add-architecture arm64 
+        echo "deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ ${CODENAME}-updates main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/amd64.list 
+        echo "deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ ${CODENAME}-backports main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/amd64.list
+        echo "deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ ${CODENAME}-security main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/amd64.list
+        echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports ${CODENAME} main restricted universe multiverse" | sudo tee /etc/apt/sources.list.d/arm64.list 
+        echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports ${CODENAME}-updates main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/arm64.list 
+        echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports ${CODENAME}-backports main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/arm64.list 
+        echo "deb [arch=arm64] http://ports.ubuntu.com/ubuntu-ports ${CODENAME}-security main restricted universe multiverse" | sudo tee -a /etc/apt/sources.list.d/arm64.list
+        
+        sudo dpkg --add-architecture arm64
+
+        sudo apt-get clean
+        sudo rm -rf /var/lib/apt/lists/*
+        sudo apt-get update -o Dir::Etc::sourcelist="sources.list.d/amd64.list" -o Dir::Etc::sourceparts="-" -o APT::Default-Release="${CODENAME}"
+        sudo apt-get update -o Dir::Etc::sourcelist="sources.list.d/arm64.list" -o Dir::Etc::sourceparts="-" -o APT::Architecture="arm64" -o APT::Default-Release="${CODENAME}"
     - name: Install Dependencies
       run: |
         sudo apt-get update
