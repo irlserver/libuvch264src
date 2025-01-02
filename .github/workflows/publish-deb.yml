@@ -21,7 +21,8 @@ jobs:
         sudo apt-get install -y g++-aarch64-linux-gnu
     - name: Add arm64 architecture and Update Sources
       run: |
-        sudo rm /etc/apt/sources.list.d/ubuntu.sources
+        sudo su
+        rm /etc/apt/sources.list.d/ubuntu.sources
         export CODENAME="$( lsb_release -c -s )"
         echo "deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ ${CODENAME} main restricted universe multiverse" >>/etc/apt/sources.list.d/amd64.list 
         echo "deb [arch=amd64] http://archive.ubuntu.com/ubuntu/ ${CODENAME}-updates main restricted universe multiverse" >>/etc/apt/sources.list.d/amd64.list 
